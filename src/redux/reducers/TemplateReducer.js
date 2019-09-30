@@ -1,8 +1,9 @@
-import { GET_TEMPLATES, SET_CURRENT_TEMPLATE, SET_TEMPLATES } from '../actions/actions';
+import { GET_TEMPLATES, SET_CURRENT_TEMPLATE, SET_TEMPLATES, IS_LOADED } from '../actions/actions';
 
 let initialState = {
     templates: [],
-    currentTemplate: {}
+    currentTemplate: {},
+    loading: false
 };
 
 const TemplateReducer = (state = initialState, action) => {
@@ -13,25 +14,36 @@ const TemplateReducer = (state = initialState, action) => {
                 templates: action.payload
             };
         case SET_TEMPLATES:
-            let updateTemplates = state.templates.filter((template) => {
+            let updateTemplates = state.templates.map((template, i) => {
                 if (template.id === action.payload.id) {
-                    template = action.payload
+                    template = action.payload;
                 }
+                console.log(i, template);
                 return template;
-            })
+            });
+            console.log(updateTemplates);
             return {
                 ...state,
-                templates: updateTemplates 
+                templates: updateTemplates
             };
         case SET_CURRENT_TEMPLATE:
             return {
                 ...state,
                 template: action.payload
-            }
+            };
+        case IS_LOADED:
+            return {
+                ...state,
+                loading: true
+            };
         default:
             return state;
     }
 };
+
+export const isLoadedAC = () => ({
+    type: IS_LOADED
+});
 
 export const getTemplatesAC = (temps) => ({
     type: GET_TEMPLATES,

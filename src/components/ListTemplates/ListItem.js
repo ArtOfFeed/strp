@@ -5,8 +5,8 @@ import {NavLink} from 'react-router-dom';
 const ListItem = (props) => {
     let listItem = props.items.map((el, i) => {
         return <tr key={i}>
-            <td><NavLink to={`/${el.id}`}>{el.id}</NavLink></td>
-            <td>{el.name}</td>
+            <td>{el.id}</td>
+            <td><NavLink to={`/${el.id}`}>{el.name}</NavLink></td>
             <td>{TransformTimestamp(el.modified)}</td>
         </tr>
     });

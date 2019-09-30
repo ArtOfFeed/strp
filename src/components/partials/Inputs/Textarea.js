@@ -1,11 +1,11 @@
 import React from 'react';
 
-const Textarea = ({label, items}) => {
+const Textarea = function({items}) {
     return (
         <div className="text_field">
-            <textarea className={label} onChange={(e) => items.input.onChange(e)} defaultValue={items.input.value} required />
+            <textarea className='template' onChange={(e) => items.input.onChange(e)} defaultValue={items.input.value} required />
             <hr />
-            <label>{label}</label>
+            <label>template</label>
         </div>
     )
 };

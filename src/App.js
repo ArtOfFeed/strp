@@ -6,7 +6,7 @@ import TemplateFormContainer from './components/TemplateForm/TemplateFormContain
 
 const App = () => {
 	return (
-		<div className="wrapper_app container">
+		<div className="wrapper_app container_main">
 			<h1><NavLink to='/'>Holla</NavLink></h1>
 			<Route exact path='/' component={ListTemplatesContainer} />
 			<Route exact path='/:id' component={TemplateFormContainer} />

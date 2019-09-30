@@ -13,6 +13,7 @@ class ListTemplates extends React.Component {
 				})
 				.then(data => {
 					this.props.getTemplates(data);
+					this.props.isLoaded();
 				})
 				.catch(err => {
 					console.error('Something goes wrong ', err)
@@ -21,10 +22,10 @@ class ListTemplates extends React.Component {
 	}
 	render() {
 		return (
-			<table>
-				<ListHead />
-				<ListItem items={this.props.templates} />
-			</table>
+            <table>
+                <ListHead />
+                <ListItem items={this.props.templates} />
+            </table>
 		)
 	}
 }

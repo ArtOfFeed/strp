@@ -15,6 +15,7 @@ const mapDispatchToProps = (dispatch) => {
 			dispatch(setCurrentTemplateAC(temp))
 		},
 		setTemplates: (temp) => {
+		    temp.modified = Date.now();
 			dispatch(setTemplatesAC(temp))
 		}
 	}
