@@ -1,18 +1,22 @@
 import { connect } from 'react-redux';
-import {setTemplatesAC} from '../../redux/reducers/TemplateReducer';
+import { setCurrentTemplateAC, setTemplatesAC } from '../../redux/reducers/TemplateReducer';
 import TemplateForm from './TemplateForm';
 
 const mapStateToProps = (state) => {
 	return {
-		templates: state.templatesPage.templates
+		templates: state.templatesPage.templates,
+		initialValues: state.templatesPage.template
 	}
 };
 
 const mapDispatchToProps = (dispatch) => {
 	return {
+		setCurrentTemplate: (temp) => {
+			dispatch(setCurrentTemplateAC(temp))
+		},
 		setTemplates: (temp) => {
-            dispatch(setTemplatesAC(temp))
-        }
+			dispatch(setTemplatesAC(temp))
+		}
 	}
 };
 

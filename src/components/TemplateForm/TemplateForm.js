@@ -1,17 +1,19 @@
 import React from 'react';
 import { GetIdFromUrl } from '../../utils/GetIdFromUrl';
-import {Redirect} from 'react-router-dom';
-import {Field, reduxForm} from "redux-form";
+import { Redirect } from 'react-router-dom';
+import { Field, reduxForm } from "redux-form";
+import Textarea from '../partials/Inputs/Textarea';
 
-const TemplateForm = ({location, templates, ...props}) => {
+const TemplateForm = ({ location, templates, ...props }) => {
 
-    if (!templates.length) return <Redirect to='/'/>;
+    if (!templates.length) return <Redirect to='/' />;
 
     let template = GetIdFromUrl(location.pathname.substring(1), templates);
+    props.setCurrentTemplate(template)
     let temps = Object.keys(template).map((key, i) => {
-        let value = template[key];
-        return <Field component={'textarea'} key={`field_${i}`} value={`${value}`} name={`${key}`}  />;
+        return <Field key={`field_${i}`} name={`${key}`} component={props => <Textarea items={props} label={`${key}`} />} />;
     });
+    
     return (
         <div className="wrapper_form">
             <h2>Form</h2>
@@ -23,4 +25,4 @@ const TemplateForm = ({location, templates, ...props}) => {
     )
 };
 
-export default reduxForm({form: 'tempForm'})(TemplateForm);
+export default reduxForm({ form: 'tempForm', onSubmit: (e) => console.log(e) })(TemplateForm);

@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import {setTemplatesAC} from '../../redux/reducers/TemplateReducer';
+import { getTemplatesAC } from '../../redux/reducers/TemplateReducer';
 import ListTemplates from './ListTemplates';
 
 const mapStateToProps = (state) => {
@@ -10,9 +10,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
 	return {
-		setTemplates: (temp) => {
-            dispatch(setTemplatesAC(temp))
-        }
+		getTemplates: (temps) => {
+			dispatch(getTemplatesAC(temps))
+		}
 	}
 }
 

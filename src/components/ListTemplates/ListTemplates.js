@@ -6,16 +6,18 @@ const url = 'https://api.myjson.com/bins/azz4s';
 
 class ListTemplates extends React.Component {
 	componentDidMount() {
-		fetch(url)
-			.then(res => {
-				return res.json();
-			})
-			.then(data => {
-				this.props.setTemplates(data);
-			})
-			.catch(err => {
-				console.error('Something goes wrong ', err)
-			});
+		if (!this.props.templates.length) {
+			fetch(url)
+				.then(res => {
+					return res.json();
+				})
+				.then(data => {
+					this.props.getTemplates(data);
+				})
+				.catch(err => {
+					console.error('Something goes wrong ', err)
+				});
+		}
 	}
 	render() {
 		return (
