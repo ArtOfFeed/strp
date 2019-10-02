@@ -18,7 +18,6 @@ const TemplateReducer = (state = initialState, action) => {
                 if (template.id === action.payload.id) {
                     template = action.payload;
                 }
-                console.log(i, template);
                 return template;
             });
             console.log(updateTemplates);

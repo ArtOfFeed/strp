@@ -1,31 +1,31 @@
 import React from 'react';
 
-class TemplateItem extends React.Component {
+const TemplateItem = ({template}) => {
+    const PaintElement = (tag, attr, child) => {
+        return React.createElement(
+            tag,
+            attr ? attr : {},
+            child ? child : ''
+        );
+    };
 
-    constructor(props) {
-        super(props);
-        console.log(this.props);
-        this.templateRef = React.createRef();
-        this.editableTags = null;
-    }
+    const preRender = (template) => {
+        let arr = [];
+        let result = null;
+        if (template.content.length > 1) {
+            result = PaintElement(template.type, template.attributes, arr);
+            for (let i = 0; i < template.content.length; i++) {
+                if (typeof template.content[i] === 'object') {
+                    arr.push(PaintElement(template.content[i].type, template.content[i].attributes, preRender(template.content[i])));
+                }
+            }
+        }
+        return result;
+    };
 
-    componentDidMount() {
-        this.editableTags = [...this.templateRef.current.getElementsByClassName('editable')];
-        console.log(this.editableTags);
-        this.editableTags.forEach((tags) => {
-            tags.addEventListener('click', this.handleClick);
-        });
-    }
-
-    handleClick(e) {
-        console.log('clicked', e);
-    }
-
-    render() {
-        return (
-            <div className='template_inner' ref={this.templateRef} dangerouslySetInnerHTML={{ __html: this.props.template }} />
-        )
-    }
-}
+    return(
+        preRender(template)
+    )
+};
 
 export default TemplateItem;

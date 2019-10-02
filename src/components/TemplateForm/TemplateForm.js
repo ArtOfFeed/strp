@@ -23,7 +23,7 @@ const TemplateForm = ({ location, templates, ...props }) => {
                 <Field name='template' component={props => <Textarea items={props} />} />
                 <button type="submit">Save</button>
             </form>
-            <TemplateItem template={template.template} />
+            <TemplateItem template={template.dom_model} />
         </div>
     )
 };
