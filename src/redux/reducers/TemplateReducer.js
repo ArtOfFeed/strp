@@ -1,9 +1,11 @@
-import { GET_TEMPLATES, SET_CURRENT_TEMPLATE, SET_TEMPLATES, IS_LOADED } from '../actions/actions';
+import { GET_TEMPLATES, SET_CURRENT_TEMPLATE, SET_TEMPLATES, IS_LOADED, FONT_CHANGER_TOGGLE } from '../actions/actions';
 
 let initialState = {
     templates: [],
     currentTemplate: {},
-    loading: false
+    loading: false,
+    fontChangerOpen: false,
+    editText: null
 };
 
 const TemplateReducer = (state = initialState, action) => {
@@ -20,7 +22,6 @@ const TemplateReducer = (state = initialState, action) => {
                 }
                 return template;
             });
-            console.log(updateTemplates);
             return {
                 ...state,
                 templates: updateTemplates
@@ -34,6 +35,19 @@ const TemplateReducer = (state = initialState, action) => {
             return {
                 ...state,
                 loading: true
+            };
+        case FONT_CHANGER_TOGGLE:
+            let toggleFontPanel = state.fontChangerOpen;
+            if (state.editText === null || (!state.fontChangerOpen && state.editText !== action.payload)) {
+                toggleFontPanel = true;
+            }
+            if (state.editText === action.payload) {
+                toggleFontPanel = !state.fontChangerOpen;
+            }
+            return {
+                ...state,
+                editText: !state.fontChangerOpen ? action.payload : state.editText,
+                fontChangerOpen: toggleFontPanel,
             };
         default:
             return state;
@@ -57,6 +71,11 @@ export const setTemplatesAC = (temp) => ({
 export const setCurrentTemplateAC = (temp) => ({
     type: SET_CURRENT_TEMPLATE,
     payload: temp
+});
+
+export const toggleFontChangerAC = (text) => ({
+    type: FONT_CHANGER_TOGGLE,
+    payload: text
 });
 
 export const getTemplatesThunkCreator = () => {
