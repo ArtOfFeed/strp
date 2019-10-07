@@ -1,11 +1,13 @@
-import { GET_TEMPLATES, SET_CURRENT_TEMPLATE, SET_TEMPLATES, IS_LOADED, FONT_CHANGER_TOGGLE } from '../actions/actions';
+import { GET_TEMPLATES, SET_CURRENT_TEMPLATE, SET_TEMPLATES, IS_LOADED, FONT_CHANGER_TOGGLE, UPDATE_CURRENT_TEMPLATE } from '../actions/actions';
+import {API} from "../../API/api";
+import {convertReceivedData} from "../../utils/ConvertRecevedData";
 
 let initialState = {
     templates: [],
     currentTemplate: {},
     loading: false,
     fontChangerOpen: false,
-    editText: null
+    editText: null,
 };
 
 const TemplateReducer = (state = initialState, action) => {
@@ -29,7 +31,24 @@ const TemplateReducer = (state = initialState, action) => {
         case SET_CURRENT_TEMPLATE:
             return {
                 ...state,
+                currentTemplate: action.payload.dom_model,
                 template: action.payload
+            };
+        case UPDATE_CURRENT_TEMPLATE:
+            let current = state.currentTemplate;
+            const addActiveClass = (current) => {
+                for (let i = 0; i < current.content.length; i++) {
+                    if (typeof current.content[i] === 'object') {
+                        addActiveClass(current.content[i]);
+                    } else {
+                        current.content[i].replace(/\s/g, '') === action.payload ? current.isActive = true : current.isActive = false;
+                    }
+                }
+                return Object.assign({}, current);
+            };
+            return {
+                ...state,
+                currentTemplate: addActiveClass(current)
             };
         case IS_LOADED:
             return {
@@ -73,15 +92,25 @@ export const setCurrentTemplateAC = (temp) => ({
     payload: temp
 });
 
+export const updateCurrentTemplateAC = (val) => ({
+    type: UPDATE_CURRENT_TEMPLATE,
+    payload: val
+});
+
 export const toggleFontChangerAC = (text) => ({
     type: FONT_CHANGER_TOGGLE,
     payload: text
 });
 
-export const getTemplatesThunkCreator = () => {
-    return (dispatch) => {
-
-    }
+export const getTemplatesThunkCreator = () => (dispatch) => {
+    API.getRequestTemplates()
+        .then(data => {
+            dispatch(getTemplatesAC(convertReceivedData(data)));
+            dispatch(isLoadedAC())
+        })
+        .catch(err => {
+            console.error('Something goes wrong ', err)
+        });
 };
 
 export default TemplateReducer;

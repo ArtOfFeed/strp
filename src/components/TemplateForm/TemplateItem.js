@@ -1,16 +1,22 @@
 import React from 'react';
 
-const TemplateItem = ({ template, toggleFontChanger }) => {
+const TemplateItem = ({ template, toggleFontChanger, updateCurrentTemplate }) => {
     const PaintElement = (tag, attr, child) => {
         if (tag !== null) {
             return React.createElement(
                 tag,
-                attr.className === 'editable' ? {onClick: (e) => toggleFontChanger(e.target.textContent.replace(/\s/g, '')), ...attr} : attr,
+                attr.className === 'editable' ? {onClick: (e) => toggleFont(e), ...attr} : attr,
                 child ? child : ''
             );
         } else {
             return child[0];
         }
+    };
+
+    const toggleFont = (e) => {
+        let val = e.target.textContent.replace(/\s/g, '');
+        updateCurrentTemplate(val);
+        toggleFontChanger(val)
     };
 
     const preRender = (template) => {

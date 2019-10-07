@@ -7,7 +7,7 @@ import TemplateItem from './TemplateItem';
 import FontChanger from '../FontChanger/FontChanger';
 import { gridFonts } from '../partials/gridFonts';
 
-const TemplateForm = ({ location, templates, fontChangerToggle, toggleFontChanger, ...props }) => {
+const TemplateForm = ({ location, templates, fontChangerToggle, toggleFontChanger, updateCurrentTemplate, currentTemplate, ...props }) => {
 
     if (!templates.length) return <Redirect to='/' />;
 
@@ -26,7 +26,7 @@ const TemplateForm = ({ location, templates, fontChangerToggle, toggleFontChange
                 <Field name='template' component={props => <Textarea items={props} />} />
                 <button type="submit">Save</button>
             </form>
-            <TemplateItem template={template.dom_model} toggleFontChanger={toggleFontChanger} />
+            <TemplateItem template={template.dom_model} updateCurrentTemplate={updateCurrentTemplate} toggleFontChanger={toggleFontChanger} />
         </div>
     )
 };

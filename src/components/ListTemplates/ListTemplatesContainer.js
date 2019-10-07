@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { getTemplatesAC, isLoadedAC } from '../../redux/reducers/TemplateReducer';
+import {getTemplatesThunkCreator} from '../../redux/reducers/TemplateReducer';
 import ListTemplates from './ListTemplates';
 
 const mapStateToProps = (state) => {
@@ -7,17 +7,6 @@ const mapStateToProps = (state) => {
 		templates: state.templatesPage.templates,
         loading: state.templatesPage.loading
 	}
-}
+};
 
-const mapDispatchToProps = (dispatch) => {
-	return {
-		getTemplates: (temps) => {
-			dispatch(getTemplatesAC(temps))
-		},
-		isLoaded: () => {
-			dispatch(isLoadedAC())
-		}
-	}
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(ListTemplates);
+export default connect(mapStateToProps, {getTemplatesThunkCreator})(ListTemplates);

@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { setCurrentTemplateAC, setTemplatesAC, toggleFontChangerAC } from '../../redux/reducers/TemplateReducer';
+import { setCurrentTemplateAC, setTemplatesAC, toggleFontChangerAC, updateCurrentTemplateAC } from '../../redux/reducers/TemplateReducer';
 import TemplateForm from './TemplateForm';
 
 const mapStateToProps = (state) => {
@@ -7,7 +7,8 @@ const mapStateToProps = (state) => {
 		templates: state.templatesPage.templates,
 		initialValues: state.templatesPage.template,
 		fontChangerToggle: state.templatesPage.fontChangerOpen,
-		editText: state.templatesPage.editText
+		editText: state.templatesPage.editText,
+		template: state.templatesPage.currentTemplate
 	}
 };
 
@@ -22,7 +23,10 @@ const mapDispatchToProps = (dispatch) => {
 		},
 		toggleFontChanger: (text) => {
 			dispatch(toggleFontChangerAC(text))
-		}
+		},
+        updateCurrentTemplate: (text) => {
+		    dispatch(updateCurrentTemplateAC(text));
+        }
 	}
 };
 
