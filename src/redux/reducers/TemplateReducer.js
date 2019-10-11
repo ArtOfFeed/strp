@@ -1,10 +1,9 @@
-import { GET_TEMPLATES, SET_CURRENT_TEMPLATE, SET_TEMPLATES, IS_LOADED, FONT_CHANGER_TOGGLE, UPDATE_CURRENT_TEMPLATE } from '../actions/actions';
+import { GET_TEMPLATES, SET_TEMPLATES, IS_LOADED, FONT_CHANGER_TOGGLE, UPDATE_CURRENT_TEMPLATE } from '../actions/actions';
 import {API} from "../../API/api";
 import {convertReceivedData} from "../../utils/ConvertRecevedData";
 
 let initialState = {
     templates: [],
-    currentTemplate: {},
     loading: false,
     fontChangerOpen: false,
     editText: null,
@@ -28,27 +27,31 @@ const TemplateReducer = (state = initialState, action) => {
                 ...state,
                 templates: updateTemplates
             };
-        case SET_CURRENT_TEMPLATE:
-            return {
-                ...state,
-                currentTemplate: action.payload.dom_model,
-                template: action.payload
-            };
         case UPDATE_CURRENT_TEMPLATE:
-            let current = state.currentTemplate;
+            let template = state.templates.find(({id}) => id === action.payload.id);
+            let current = template.dom_model;
             const addActiveClass = (current) => {
                 for (let i = 0; i < current.content.length; i++) {
                     if (typeof current.content[i] === 'object') {
                         addActiveClass(current.content[i]);
                     } else {
-                        current.content[i].replace(/\s/g, '') === action.payload ? current.isActive = true : current.isActive = false;
+                        console.log(current.content[i].replace(/\s/g, ''), action.payload)
+                        current.content[i].replace(/\s/g, '') === action.payload.val ? current.isActive = true : current.isActive = false;
                     }
                 }
                 return Object.assign({}, current);
             };
+            let temps = state.templates.map((temp) => {
+                if (temp.id === action.payload.id) {
+                    addActiveClass(current);
+                    temp = template;
+                }
+                return temp;
+            })
+            console.log(temps);
             return {
                 ...state,
-                currentTemplate: addActiveClass(current)
+                templates: temps
             };
         case IS_LOADED:
             return {
@@ -87,14 +90,9 @@ export const setTemplatesAC = (temp) => ({
     payload: temp
 });
 
-export const setCurrentTemplateAC = (temp) => ({
-    type: SET_CURRENT_TEMPLATE,
-    payload: temp
-});
-
-export const updateCurrentTemplateAC = (val) => ({
+export const updateCurrentTemplateAC = (payload) => ({
     type: UPDATE_CURRENT_TEMPLATE,
-    payload: val
+    payload
 });
 
 export const toggleFontChangerAC = (text) => ({
